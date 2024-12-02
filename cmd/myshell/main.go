@@ -69,8 +69,8 @@ func main() {
 					out = fmt.Sprintf("%v: not found", tokens[1])
 				}
 			default:
-				program, exists := constants.MapCommand2Path[tokens[0]]
-				if exists {
+				program, isExisted := constants.MapCommand2Path[tokens[0]]
+				if !isExisted {
 					out = fmt.Sprintf("%v: command not found", tokens[0])
 				} else {
 					var args []string
