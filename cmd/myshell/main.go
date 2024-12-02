@@ -18,7 +18,7 @@ var _ = fmt.Fprint
 
 func readEntry(entry fs.DirEntry, prefix string, level int) {
 	curEntry := filepath.Join(prefix, entry.Name())
-	// fmt.Println(strings.Repeat("\t", level), entry.Name(), entry.IsDir(), constants.MapCommand2Path[entry.Name()] != constants.BUILTIN)
+	fmt.Println(strings.Repeat("\t", level), entry.Name(), entry.IsDir(), constants.MapCommand2Path[entry.Name()] != constants.BUILTIN)
 	if entry.IsDir() {
 		childEntries, _ := os.ReadDir(entry.Name())
 		for _, entry := range childEntries {
@@ -71,9 +71,6 @@ func main() {
 				}
 				program, isExisted := constants.MapCommand2Path[tokens[0]]
 				if !isExisted {
-					for key, val := range constants.MapCommand2Path {
-						fmt.Println(key, val)
-					}
 					out = fmt.Sprintf("%v: command not found", tokens[0])
 				} else {
 					var args []string
