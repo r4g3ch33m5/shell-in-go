@@ -36,7 +36,7 @@ func main() {
 			case constants.ECHO:
 				out = strings.Join(tokens[1:], " ")
 			case constants.TYPE:
-				path, isExists := constants.MapCommand2Path[tokens[0]]
+				path, isExists := constants.MapCommand2Path[tokens[1]]
 				if isExists {
 					out = fmt.Sprintf("%v is %v", tokens[0], path)
 				} else {

@@ -12,4 +12,5 @@ const BUILTIN = "a shell builtin"
 var MapCommand2Path = map[string]string{
 	ECHO: BUILTIN,
 	EXIT: BUILTIN,
+	TYPE: BUILTIN,
 }
