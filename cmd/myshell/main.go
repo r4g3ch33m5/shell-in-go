@@ -84,8 +84,7 @@ func main() {
 						args = tokens[1:]
 					}
 					output, _ := exec.Command(program, args...).Output()
-					out = string(output)
-
+					out = strings.TrimSuffix(string(output), "\n")
 				}
 			}
 			fmt.Fprint(os.Stdout, out, "\n$ ")
