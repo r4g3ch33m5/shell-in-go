@@ -66,9 +66,6 @@ func main() {
 				out = strings.TrimSuffix(string(output), "\n")
 			}
 		}
-		if len(out) > 0 {
-			out = out + "\n"
-		}
-		fmt.Fprint(os.Stdout, out, "$ ")
+		fmt.Fprint(os.Stdout, out, "\n$ ")
 	}
 }
