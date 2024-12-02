@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -44,8 +45,9 @@ func main() {
 				} else {
 					out = fmt.Sprintf("%v: not found", tokens[1])
 				}
+			case constants.PWD:
+				out, _ = filepath.Abs(".")
 			default:
-
 				// fmt.Println(constants.MapCommand2Path)
 				program, isExisted := constants.GetCommand(tokens[0])
 				if !isExisted {

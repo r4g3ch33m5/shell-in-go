@@ -11,6 +11,7 @@ import (
 const ECHO = "echo"
 const EXIT = "exit"
 const TYPE = "type"
+const PWD = "pwd"
 
 // const CAT = "cat"
 
