@@ -37,14 +37,14 @@ func main() {
 	out := ""
 	pathEnv := os.Getenv("PATH")
 	paths := strings.Split(pathEnv, ":")
-
 	for _, path := range paths {
 		fileEntries, _ := os.ReadDir(filepath.Dir(path))
-		fmt.Println(filepath.Dir(path))
 		for _, entry := range fileEntries {
 			readEntry(entry, path, 1)
 		}
-		fmt.Println(constants.MapCommand2Path)
+		for key, val := range constants.MapCommand2Path {
+			fmt.Println("command", key, "path", val)
+		}
 	}
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
