@@ -30,7 +30,7 @@ func main() {
 			}
 			os.Exit(code)
 		case constants.ECHO:
-			fmt.Fprint(os.Stdout, inp[len(tokens):])
+			fmt.Fprint(os.Stdout, strings.TrimSpace(inp[len(tokens):]))
 		default:
 			str := fmt.Sprintf("%v: command not found\n", strings.TrimRight(inp, "\n"))
 			fmt.Fprint(os.Stdout, str)
