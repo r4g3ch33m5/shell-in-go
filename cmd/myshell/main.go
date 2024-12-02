@@ -25,7 +25,6 @@ func readEntry(entry fs.DirEntry, prefix string, level int) {
 			readEntry(entry, curEntry, level+1)
 		}
 	} else if constants.MapCommand2Path[entry.Name()] != constants.BUILTIN {
-		fmt.Println(strings.Repeat("\t", level), entry.Name())
 		constants.MapCommand2Path[entry.Name()] = curEntry
 	}
 }
