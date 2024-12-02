@@ -26,7 +26,6 @@ func readEntry(entry fs.DirEntry, prefix string, level int) {
 		}
 	}
 	if constants.MapCommand2Path[entry.Name()] != constants.BUILTIN {
-		fmt.Println("add entry", entry.Name())
 		constants.MapCommand2Path[entry.Name()] = curEntry
 	}
 }
@@ -72,6 +71,7 @@ func main() {
 			default:
 				program, isExisted := constants.MapCommand2Path[tokens[0]]
 				if !isExisted {
+					fmt.Println(tokens[0], constants.MapCommand2Path)
 					out = fmt.Sprintf("%v: command not found", tokens[0])
 				} else {
 					var args []string
