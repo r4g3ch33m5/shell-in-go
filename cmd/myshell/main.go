@@ -40,8 +40,9 @@ func main() {
 
 	for _, path := range paths {
 		fileEntries, _ := os.ReadDir(filepath.Dir(path))
+		fmt.Println(path)
 		for _, entry := range fileEntries {
-			readEntry(entry, path, 0)
+			readEntry(entry, path, 1)
 		}
 	}
 	for {
