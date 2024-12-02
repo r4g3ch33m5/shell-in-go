@@ -67,9 +67,9 @@ func main() {
 					pathEnv := os.Getenv("PATH")
 					paths := strings.Split(pathEnv, ":")
 					for _, path := range paths {
-						fileEntries, _ := os.ReadDir(filepath.Dir(path))
+						fileEntries, _ := os.ReadDir(path)
 						for _, entry := range fileEntries {
-							readEntry(entry, filepath.Dir(path), 0)
+							readEntry(entry, path, 0)
 						}
 					}
 					out = fmt.Sprintf("%v: command not found", tokens[0])
