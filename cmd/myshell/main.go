@@ -40,14 +40,6 @@ func main() {
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
 		fmt.Fprint(os.Stdout, "$ ")
-		pathEnv := os.Getenv("PATH")
-		paths := strings.Split(pathEnv, ":")
-		for _, path := range paths {
-			fileEntries, _ := os.ReadDir(filepath.Dir(path))
-			for _, entry := range fileEntries {
-				readEntry(entry, path, 1)
-			}
-		}
 		for scanner.Scan() {
 			inp := scanner.Text()
 			tokens := strings.Split(inp, " ")
@@ -69,6 +61,14 @@ func main() {
 					out = fmt.Sprintf("%v: not found", tokens[1])
 				}
 			default:
+				pathEnv := os.Getenv("PATH")
+				paths := strings.Split(pathEnv, ":")
+				for _, path := range paths {
+					fileEntries, _ := os.ReadDir(filepath.Dir(path))
+					for _, entry := range fileEntries {
+						readEntry(entry, path, 1)
+					}
+				}
 				program, isExisted := constants.MapCommand2Path[tokens[0]]
 				if !isExisted {
 					fmt.Println(tokens[0], constants.MapCommand2Path)
