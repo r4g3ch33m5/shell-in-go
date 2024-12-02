@@ -18,10 +18,9 @@ var _ = fmt.Fprint
 
 func readEntry(entry fs.DirEntry, prefix string, level int) {
 	entryUri := filepath.Join(prefix, entry.Name())
-	// fmt.Print(strings.Repeat("| ", level), entryUri, "\n", level)
+	fmt.Print(strings.Repeat("| ", level), entry.Name(), "\n")
 	if entry.IsDir() {
-		childEntries, err := os.ReadDir(entryUri)
-		fmt.Println(err)
+		childEntries, _ := os.ReadDir(entryUri)
 		for _, entry := range childEntries {
 			readEntry(entry, entryUri, level+1)
 		}
