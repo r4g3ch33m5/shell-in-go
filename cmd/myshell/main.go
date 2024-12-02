@@ -48,7 +48,6 @@ func main() {
 			tmp := filepath.Join(curWorkingDir, tokens[1])
 			fmt.Println(tmp)
 			if _, err := os.Stat(tmp); err != nil {
-				fmt.Println(err)
 				out = fmt.Sprintf("cd: %v: No such file or directory", tokens[1])
 			} else {
 				curWorkingDir = tmp
