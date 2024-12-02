@@ -16,5 +16,5 @@ func main() {
 	// Wait for user input
 	inp, _ := bufio.NewReader(os.Stdin).ReadString('\n')
 	str := fmt.Sprintf("%v: command not found", inp)
-	fmt.Fprintf(os.Stdout, str)
+	fmt.Fprint(os.Stdout, str)
 }
