@@ -29,10 +29,9 @@ func readEntry(entry fs.DirEntry, prefix string, level int) {
 		}
 	}
 	if constants.MapCommand2Path[entry.Name()] != constants.BUILTIN {
-		// fmt.Println(curEntry)
+		fmt.Println(curEntry)
 		constants.MapCommand2Path[entry.Name()] = curEntry
 	}
-
 }
 
 func main() {
