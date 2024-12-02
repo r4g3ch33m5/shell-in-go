@@ -36,18 +36,18 @@ func main() {
 	// outputChan := shell.NewTokenizer(inpChan)
 	// Wait for user input
 	out := ""
-	pathEnv := os.Getenv("PATH")
-	paths := strings.Split(pathEnv, ":")
-	for _, path := range paths {
-		fileEntries, _ := os.ReadDir(filepath.Dir(path))
-		for _, entry := range fileEntries {
-			readEntry(entry, path, 1)
-		}
-	}
 
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
 		fmt.Fprint(os.Stdout, "$ ")
+		pathEnv := os.Getenv("PATH")
+		paths := strings.Split(pathEnv, ":")
+		for _, path := range paths {
+			fileEntries, _ := os.ReadDir(filepath.Dir(path))
+			for _, entry := range fileEntries {
+				readEntry(entry, path, 1)
+			}
+		}
 		for scanner.Scan() {
 			inp := scanner.Text()
 			tokens := strings.Split(inp, " ")
