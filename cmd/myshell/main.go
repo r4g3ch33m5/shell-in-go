@@ -42,11 +42,11 @@ func main() {
 		for _, entry := range fileEntries {
 			readEntry(entry, path, 1)
 		}
-		for key, val := range constants.MapCommand2Path {
-			fmt.Println("command", key, "path", val)
-		}
-
 	}
+	for key, val := range constants.MapCommand2Path {
+		fmt.Println("command", key, "path", val)
+	}
+
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
 		fmt.Fprint(os.Stdout, "$ ")
