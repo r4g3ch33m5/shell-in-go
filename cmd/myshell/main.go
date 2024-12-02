@@ -25,6 +25,7 @@ func readEntry(entry fs.DirEntry, prefix string, level int) {
 			readEntry(entry, curEntry, level+1)
 		}
 	} else if constants.MapCommand2Path[entry.Name()] != constants.BUILTIN {
+		fmt.Println(entry.Name())
 		constants.MapCommand2Path[entry.Name()] = curEntry
 	}
 }
@@ -41,8 +42,6 @@ func main() {
 	for _, path := range paths {
 		fileEntries, _ := os.ReadDir(filepath.Dir(path))
 		for _, entry := range fileEntries {
-			fmt.Println(entry.Name())
-
 			readEntry(entry, path, 0)
 		}
 	}
