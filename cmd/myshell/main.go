@@ -35,5 +35,6 @@ func main() {
 			str := fmt.Sprintf("%v: command not found\n", strings.TrimRight(inp, "\n"))
 			fmt.Fprint(os.Stdout, str)
 		}
+		fmt.Fprint(os.Stdout, "\n")
 	}
 }
