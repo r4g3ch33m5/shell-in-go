@@ -23,9 +23,10 @@ func readEntry(entry fs.DirEntry, prefix string, level int) {
 		for _, entry := range childEntries {
 			readEntry(entry, curEntry, level+1)
 		}
-	} else {
+	} else if constants.MapCommand2Path[entry.Name()] != constants.BUILTIN {
 		constants.MapCommand2Path[entry.Name()] = curEntry
 	}
+
 }
 
 func main() {
@@ -36,12 +37,14 @@ func main() {
 	out := ""
 	pathEnv := os.Getenv("PATH")
 	paths := strings.Split(pathEnv, ":")
+
 	for _, path := range paths {
 		fileEntries, _ := os.ReadDir(path)
 		for _, entry := range fileEntries {
 			readEntry(entry, path, 0)
 		}
 	}
+
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
 		fmt.Fprint(os.Stdout, "$ ")
