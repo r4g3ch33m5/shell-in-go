@@ -27,12 +27,12 @@ func readEntry(entry fs.DirEntry, prefix string, level int) {
 		for _, entry := range childEntries {
 			readEntry(entry, curEntry, level+1)
 		}
-	} else {
-		if constants.MapCommand2Path[entry.Name()] != constants.BUILTIN {
-			// fmt.Println(curEntry)
-			constants.MapCommand2Path[entry.Name()] = curEntry
-		}
 	}
+	if constants.MapCommand2Path[entry.Name()] != constants.BUILTIN {
+		// fmt.Println(curEntry)
+		constants.MapCommand2Path[entry.Name()] = curEntry
+	}
+
 }
 
 func main() {
