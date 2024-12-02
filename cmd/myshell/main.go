@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -26,7 +27,6 @@ func readEntry(entry fs.DirEntry, prefix string, level int) {
 	} else if constants.MapCommand2Path[entry.Name()] != constants.BUILTIN {
 		constants.MapCommand2Path[entry.Name()] = curEntry
 	}
-
 }
 
 func main() {
@@ -69,7 +69,16 @@ func main() {
 					out = fmt.Sprintf("%v: not found", tokens[1])
 				}
 			default:
-				out = fmt.Sprintf("%v: command not found", tokens[0])
+				program, exists := constants.MapCommand2Path[tokens[0]]
+				if exists {
+					out = fmt.Sprintf("%v: command not found", tokens[0])
+				} else {
+					var args []string
+					if len(tokens) > 1 {
+						args = tokens[1:]
+					}
+					exec.Command(program, args...)
+				}
 			}
 			fmt.Fprint(os.Stdout, out, "\n$ ")
 		}
