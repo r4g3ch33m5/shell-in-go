@@ -3,7 +3,9 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io/fs"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -13,12 +15,33 @@ import (
 // Ensures gofmt doesn't remove the "fmt" import in stage 1 (feel free to remove this!)
 var _ = fmt.Fprint
 
+func readEntry(entry fs.DirEntry, prefix string, level int) {
+	curEntry := filepath.Join(prefix, entry.Name())
+	// fmt.Println(strings.Repeat("\t", level), curEntry)
+	if entry.IsDir() {
+		childEntries, _ := os.ReadDir(entry.Name())
+		for _, entry := range childEntries {
+			readEntry(entry, curEntry, level+1)
+		}
+	} else {
+		constants.MapCommand2Path[entry.Name()] = curEntry
+	}
+}
+
 func main() {
 	// Uncomment this block to pass the first stage
 	// inpChan := make(chan string)
 	// outputChan := shell.NewTokenizer(inpChan)
 	// Wait for user input
 	out := ""
+	pathEnv := os.Getenv("PATH")
+	paths := strings.Split(pathEnv, ":")
+	for _, path := range paths {
+		fileEntries, _ := os.ReadDir(path)
+		for _, entry := range fileEntries {
+			readEntry(entry, path, 0)
+		}
+	}
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
 		fmt.Fprint(os.Stdout, "$ ")
