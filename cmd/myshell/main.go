@@ -20,13 +20,13 @@ func main() {
 	// inpChan := make(chan string)
 	// outputChan := shell.NewTokenizer(inpChan)
 	// Wait for user input
-	out := ""
 	curWorkingDir, _ := filepath.Abs(".")
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
 		fmt.Fprint(os.Stdout, "$ ")
 		for scanner.Scan() {
 			inp := scanner.Text()
+			out := ""
 			tokens := strings.Split(inp, " ")
 			// fmt.Println(strconv.Quote(inp))
 			switch tokens[0] {
@@ -67,7 +67,9 @@ func main() {
 					out = strings.TrimSuffix(string(output), "\n")
 				}
 			}
-			fmt.Fprint(os.Stdout, out, "\n$ ")
+			if len(out) > 0 {
+				fmt.Fprint(os.Stdout, out, "\n$ ")
+			}
 		}
 	}
 }
