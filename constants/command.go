@@ -24,6 +24,7 @@ var mapCommand2Path = map[string]string{
 	ECHO: BUILTIN,
 	EXIT: BUILTIN,
 	TYPE: BUILTIN,
+	PWD:  BUILTIN,
 	// CAT:  BUILTIN,
 }
 
