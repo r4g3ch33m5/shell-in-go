@@ -71,6 +71,9 @@ func main() {
 				}
 				program, isExisted := constants.MapCommand2Path[tokens[0]]
 				if !isExisted {
+					for key, val := range constants.MapCommand2Path {
+						fmt.Println(key, val)
+					}
 					out = fmt.Sprintf("%v: command not found", tokens[0])
 				} else {
 					var args []string
