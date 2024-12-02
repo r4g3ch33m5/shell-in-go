@@ -44,7 +44,7 @@ func main() {
 			readEntry(entry, path, 0)
 		}
 	}
-
+	fmt.Println("register command", constants.MapCommand2Path)
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
 		fmt.Fprint(os.Stdout, "$ ")
