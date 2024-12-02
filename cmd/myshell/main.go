@@ -45,12 +45,17 @@ func main() {
 				out = fmt.Sprintf("%v: not found", tokens[1])
 			}
 		case constants.CD:
-			tmp := filepath.Join(curWorkingDir, tokens[1])
+			var path string
+			if filepath.IsAbs(tokens[1]) {
+				path = tokens[1]
+			} else {
+				path = filepath.Join(curWorkingDir, tokens[1])
+			}
 			// fmt.Println(tmp)
-			if _, err := os.Stat(tmp); err != nil {
+			if _, err := os.Stat(path); err != nil {
 				out = fmt.Sprintf("cd: %v: No such file or directory", tokens[1])
 			} else {
-				curWorkingDir = tmp
+				curWorkingDir = path
 			}
 		case constants.PWD:
 			out = curWorkingDir
