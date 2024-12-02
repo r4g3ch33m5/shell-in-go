@@ -12,6 +12,7 @@ const ECHO = "echo"
 const EXIT = "exit"
 const TYPE = "type"
 const PWD = "pwd"
+const CD = "cd"
 
 // const CAT = "cat"
 
@@ -25,6 +26,7 @@ var mapCommand2Path = map[string]string{
 	EXIT: BUILTIN,
 	TYPE: BUILTIN,
 	PWD:  BUILTIN,
+	CD:   BUILTIN,
 	// CAT:  BUILTIN,
 }
 

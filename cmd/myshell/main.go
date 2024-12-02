@@ -21,7 +21,7 @@ func main() {
 	// outputChan := shell.NewTokenizer(inpChan)
 	// Wait for user input
 	out := ""
-
+	curWorkingDir, _ := filepath.Abs(".")
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
 		fmt.Fprint(os.Stdout, "$ ")
@@ -44,6 +44,12 @@ func main() {
 					out = fmt.Sprintf("%v is %v", tokens[1], path)
 				} else {
 					out = fmt.Sprintf("%v: not found", tokens[1])
+				}
+			case constants.CD:
+				var err error
+				curWorkingDir, err = filepath.Abs(tokens[1])
+				if err != nil {
+					out = fmt.Sprintf("cd: %v: No such file or directory", tokens[1])
 				}
 			case constants.PWD:
 				out, _ = filepath.Abs(".")
