@@ -70,6 +70,7 @@ func main() {
 			default:
 				program, isExisted := constants.MapCommand2Path[tokens[0]]
 				if !isExisted {
+					fmt.Println("map command", constants.MapCommand2Path)
 					out = fmt.Sprintf("%v: command not found", tokens[0])
 				} else {
 					var args []string
