@@ -39,7 +39,7 @@ func main() {
 	paths := strings.Split(pathEnv, ":")
 	fmt.Println(pathEnv, paths)
 	for _, path := range paths {
-		fileEntries, _ := os.ReadDir(path)
+		fileEntries, _ := os.ReadDir(filepath.Dir(path))
 		for _, entry := range fileEntries {
 			readEntry(entry, path, 0)
 		}
