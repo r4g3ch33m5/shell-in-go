@@ -20,6 +20,7 @@ func readEntry(entry fs.DirEntry, prefix string, level int) {
 	curEntry := filepath.Join(prefix, entry.Name())
 	// fmt.Println(strings.Repeat("| ", level), entry.Name())
 	if constants.MapCommand2Path[entry.Name()] != constants.BUILTIN {
+		fmt.Println(curEntry)
 		constants.MapCommand2Path[entry.Name()] = curEntry
 	}
 	if entry.IsDir() {
