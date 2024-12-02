@@ -40,10 +40,11 @@ func main() {
 
 	for _, path := range paths {
 		fileEntries, _ := os.ReadDir(filepath.Dir(path))
-		fmt.Println(path)
+		fmt.Println(filepath.Dir(path))
 		for _, entry := range fileEntries {
 			readEntry(entry, path, 1)
 		}
+		fmt.Println(constants.MapCommand2Path)
 	}
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
