@@ -40,7 +40,7 @@ func main() {
 				if isExists {
 					out = fmt.Sprintf("%v is %v", tokens[1], path)
 				} else {
-					out = fmt.Sprintf("%v: command not found", tokens[1])
+					out = fmt.Sprintf("%v: not found", tokens[1])
 				}
 			default:
 				out = fmt.Sprintf("%v: command not found", tokens[0])
