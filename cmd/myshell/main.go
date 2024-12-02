@@ -82,6 +82,7 @@ func main() {
 					if len(tokens) > 1 {
 						args = tokens[1:]
 					}
+					fmt.Println(program, args)
 					fmt.Println(exec.Command(program, args...).Run())
 				}
 			}
