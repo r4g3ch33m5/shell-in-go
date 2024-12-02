@@ -22,13 +22,16 @@ func main() {
 		fmt.Fprint(os.Stdout, "$ ")
 		inp, _ := bufio.NewReader(os.Stdin).ReadString('\n')
 		tokens := strings.Split(inp, " ")
-		if tokens[0] == constants.EXIT {
+		switch tokens[0] {
+		case constants.EXIT:
 			code := 0
 			if len(tokens) > 1 {
 				code, _ = strconv.Atoi(tokens[1])
 			}
 			os.Exit(code)
-		} else {
+		case constants.ECHO:
+			fmt.Fprint(os.Stdout, inp[len(tokens):])
+		default:
 			str := fmt.Sprintf("%v: command not found\n", strings.TrimRight(inp, "\n"))
 			fmt.Fprint(os.Stdout, str)
 		}
