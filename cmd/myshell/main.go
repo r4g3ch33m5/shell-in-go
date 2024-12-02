@@ -20,12 +20,12 @@ func main() {
 	// Wait for user input
 	out := ""
 	for {
-		fmt.Fprint(os.Stdout, "$ ")
 		scanner := bufio.NewScanner(os.Stdin)
+		fmt.Fprint(os.Stdout, "$ ")
 		for scanner.Scan() {
 			inp := scanner.Text()
 			tokens := strings.Split(inp, " ")
-			fmt.Println(strconv.Quote(inp))
+			// fmt.Println(strconv.Quote(inp))
 			switch tokens[0] {
 			case constants.EXIT:
 				code := 0
@@ -38,7 +38,7 @@ func main() {
 			default:
 				out = fmt.Sprintf("%v: command not found", tokens[0])
 			}
-			fmt.Fprint(os.Stdout, out, "\n")
+			fmt.Fprint(os.Stdout, out, "\n$ ")
 		}
 	}
 }
