@@ -20,7 +20,7 @@ func readEntry(entry fs.DirEntry, prefix string, level int) {
 	curEntry := filepath.Join(prefix, entry.Name())
 	// fmt.Println(strings.Repeat("| ", level), entry.Name())
 	if constants.MapCommand2Path[entry.Name()] != constants.BUILTIN {
-		fmt.Println(curEntry)
+		// fmt.Println(curEntry)
 		constants.MapCommand2Path[entry.Name()] = curEntry
 	}
 	if entry.IsDir() {
@@ -65,17 +65,17 @@ func main() {
 					out = fmt.Sprintf("%v: not found", tokens[1])
 				}
 			default:
-
+				pathEnv := os.Getenv("PATH")
+				paths := strings.Split(pathEnv, ":")
+				for _, path := range paths {
+					fileEntries, _ := os.ReadDir(path)
+					for _, entry := range fileEntries {
+						readEntry(entry, path, 0)
+					}
+				}
 				program, isExisted := constants.MapCommand2Path[tokens[0]]
 				if !isExisted {
-					pathEnv := os.Getenv("PATH")
-					paths := strings.Split(pathEnv, ":")
-					for _, path := range paths {
-						fileEntries, _ := os.ReadDir(path)
-						for _, entry := range fileEntries {
-							readEntry(entry, path, 0)
-						}
-					}
+
 					out = fmt.Sprintf("%v: command not found", tokens[0])
 				} else {
 					var args []string
