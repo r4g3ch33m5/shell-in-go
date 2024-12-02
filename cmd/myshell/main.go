@@ -61,16 +61,17 @@ func main() {
 					out = fmt.Sprintf("%v: not found", tokens[1])
 				}
 			default:
-				pathEnv := os.Getenv("PATH")
-				paths := strings.Split(pathEnv, ":")
-				for _, path := range paths {
-					fileEntries, _ := os.ReadDir(filepath.Dir(path))
-					for _, entry := range fileEntries {
-						readEntry(entry, path, 0)
-					}
-				}
+
 				program, isExisted := constants.MapCommand2Path[tokens[0]]
 				if !isExisted {
+					pathEnv := os.Getenv("PATH")
+					paths := strings.Split(pathEnv, ":")
+					for _, path := range paths {
+						fileEntries, _ := os.ReadDir(filepath.Dir(path))
+						for _, entry := range fileEntries {
+							readEntry(entry, path, 0)
+						}
+					}
 					out = fmt.Sprintf("%v: command not found", tokens[0])
 				} else {
 					var args []string
