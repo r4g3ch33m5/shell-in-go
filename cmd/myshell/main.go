@@ -45,6 +45,7 @@ func main() {
 				out = fmt.Sprintf("%v: not found", tokens[1])
 			}
 		case constants.CD:
+			tokens[1] = strings.Replace(tokens[1], "~", os.Getenv("HOME"), 1)
 			var path string
 			if filepath.IsAbs(tokens[1]) {
 				path = tokens[1]
