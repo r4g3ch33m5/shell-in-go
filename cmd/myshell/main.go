@@ -46,7 +46,7 @@ func main() {
 			}
 		case constants.CD:
 			tmp := filepath.Join(curWorkingDir, tokens[1])
-			fmt.Println(tmp)
+			// fmt.Println(tmp)
 			if _, err := os.Stat(tmp); err != nil {
 				out = fmt.Sprintf("cd: %v: No such file or directory", tokens[1])
 			} else {
