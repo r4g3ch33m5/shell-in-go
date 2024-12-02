@@ -38,9 +38,9 @@ func main() {
 			case constants.TYPE:
 				path, isExists := constants.MapCommand2Path[tokens[1]]
 				if isExists {
-					out = fmt.Sprintf("%v is %v", tokens[0], path)
+					out = fmt.Sprintf("%v is %v", tokens[1], path)
 				} else {
-					out = fmt.Sprintf("%v: command not found", tokens[0])
+					out = fmt.Sprintf("%v: command not found", tokens[1])
 				}
 			default:
 				out = fmt.Sprintf("%v: command not found", tokens[0])
