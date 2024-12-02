@@ -52,7 +52,7 @@ func main() {
 					out = fmt.Sprintf("cd: %v: No such file or directory", tokens[1])
 				}
 			case constants.PWD:
-				out, _ = filepath.Abs(".")
+				out = curWorkingDir
 			default:
 				// fmt.Println(constants.MapCommand2Path)
 				program, isExisted := constants.GetCommand(tokens[0])
