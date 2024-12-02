@@ -17,16 +17,19 @@ import (
 var _ = fmt.Fprint
 
 func readEntry(entry fs.DirEntry, prefix string, level int) {
-	entryUri := filepath.Join(prefix, entry.Name())
-	fmt.Print(strings.Repeat("| ", level), entry.Name(), "\n")
-	if entry.IsDir() {
-		childEntries, _ := os.ReadDir(entryUri)
-		for _, entry := range childEntries {
-			readEntry(entry, entryUri, level+1)
-		}
-	}
+	curEntry := filepath.Join(prefix, entry.Name())
+	// fmt.Println(strings.Repeat("| ", level), entry.Name())
 	if constants.MapCommand2Path[entry.Name()] != constants.BUILTIN {
-		constants.MapCommand2Path[entry.Name()] = entryUri
+		constants.MapCommand2Path[entry.Name()] = curEntry
+	}
+	if entry.IsDir() {
+		childEntries, err := os.ReadDir(curEntry)
+		if err != nil {
+			fmt.Println(strings.Repeat("| ", level+1), entry.Name(), err)
+		}
+		for _, entry := range childEntries {
+			readEntry(entry, curEntry, level+1)
+		}
 	}
 }
 
