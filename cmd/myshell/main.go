@@ -18,6 +18,7 @@ func main() {
 	// inpChan := make(chan string)
 	// outputChan := shell.NewTokenizer(inpChan)
 	// Wait for user input
+	out := ""
 	for {
 		fmt.Fprint(os.Stdout, "$ ")
 		inp, _ := bufio.NewReader(os.Stdin).ReadString('\n')
@@ -30,11 +31,10 @@ func main() {
 			}
 			os.Exit(code)
 		case constants.ECHO:
-			fmt.Fprint(os.Stdout, strings.TrimRight(strings.TrimSpace(inp[len(tokens[0]):]), "\n"))
+			out = strings.Join(tokens[1:], " ")
 		default:
-			str := fmt.Sprintf("%v: command not found\n", strings.TrimRight(inp, "\n"))
-			fmt.Fprint(os.Stdout, str)
+			out = fmt.Sprintf("%v: command not found", tokens[0])
 		}
-		fmt.Fprint(os.Stdout, "\n")
+		fmt.Fprint(os.Stdout, out, "\n")
 	}
 }
