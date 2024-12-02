@@ -18,13 +18,13 @@ var _ = fmt.Fprint
 
 func readEntry(entry fs.DirEntry, prefix string, level int) {
 	curEntry := filepath.Join(prefix, entry.Name())
-	fmt.Println(strings.Repeat("\t", level), entry.Name(), entry.IsDir())
 	if entry.IsDir() {
 		childEntries, _ := os.ReadDir(entry.Name())
 		for _, entry := range childEntries {
 			readEntry(entry, curEntry, level+1)
 		}
-	} else if constants.MapCommand2Path[entry.Name()] != constants.BUILTIN {
+	}
+	if constants.MapCommand2Path[entry.Name()] != constants.BUILTIN {
 		constants.MapCommand2Path[entry.Name()] = curEntry
 	}
 }
@@ -42,9 +42,6 @@ func main() {
 		for _, entry := range fileEntries {
 			readEntry(entry, path, 1)
 		}
-	}
-	for key, val := range constants.MapCommand2Path {
-		fmt.Println("command", key, "path", val)
 	}
 
 	for {
