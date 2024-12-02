@@ -45,10 +45,11 @@ func main() {
 				out = fmt.Sprintf("%v: not found", tokens[1])
 			}
 		case constants.CD:
-			var err error
-			curWorkingDir, err = filepath.Abs(tokens[1])
-			if err != nil {
+			tmp := filepath.Join(curWorkingDir, tokens[1])
+			if _, err := os.Stat(tmp); err != nil {
 				out = fmt.Sprintf("cd: %v: No such file or directory", tokens[1])
+			} else {
+				curWorkingDir = tmp
 			}
 		case constants.PWD:
 			out = curWorkingDir
