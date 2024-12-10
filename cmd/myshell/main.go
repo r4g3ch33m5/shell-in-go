@@ -22,60 +22,72 @@ func main() {
 	// Wait for user input
 	curWorkingDir, _ := filepath.Abs(".")
 	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Split(bufio.ScanWords)
 	fmt.Fprint(os.Stdout, "$ ")
 	for scanner.Scan() {
-		inp := scanner.Text()
-		out := ""
-		tokens := strings.Split(inp, " ")
+		cmd := scanner.Text()
 		// fmt.Println(strconv.Quote(inp))
-		switch tokens[0] {
+		var out string
+		switch cmd {
 		case constants.EXIT:
 			code := 0
-			if len(tokens) > 1 {
-				code, _ = strconv.Atoi(tokens[1])
+			scanner := bufio.NewScanner(os.Stdin)
+			scanner.Scan()
+			tokens := scanner.Text()
+			if len(tokens) != 0 {
+				code, _ = strconv.Atoi(tokens)
 			}
 			os.Exit(code)
 		case constants.ECHO:
-			remainBuilder := strings.Builder{}
-			remainBuilder.WriteString(strings.Join(tokens[1:], " "))
-			hasStart := strings.HasPrefix(remainBuilder.String(), "'")
-			hasTerminate := strings.HasSuffix(remainBuilder.String(), "'") && !strings.HasSuffix(remainBuilder.String(), "\\'")
-			switch {
-			// case hasStart && !hasTerminate:
-			// 	remainScanner := bufio.NewScanner(os.Stdin)
-			// 	remainScanner.Split(bufio.ScanRunes)
-			// 	for remainScanner.Scan() {
-			// 		curBytes := scanner.Bytes()
-			// 		remainBuilder.Write(curBytes)
-			// 		hasTerminate := curBytes[len(curBytes)-1] == '\'' && curBytes[len(curBytes)]
-			// 		if hasTerminate {
-			// 			break
-			// 		}
-			// 	}
-			// 	fallthrough
-			case hasStart && hasTerminate:
-				out = strings.Trim(remainBuilder.String(), "'")
-			default:
-				out = remainBuilder.String()
+			builder := strings.Builder{}
+			runeScanner := bufio.NewScanner(os.Stdin)
+			runeScanner.Split(bufio.ScanRunes)
+			hasQuote := false
+			hasSlash := false
+			for runeScanner.Scan() {
+				curRune := runeScanner.Bytes()[0]
+				switch curRune {
+				case '\\':
+					hasSlash = !hasSlash
+					builder.WriteByte(curRune)
+				case '\'':
+					if hasSlash {
+						builder.WriteByte(curRune)
+					}
+					hasQuote = !hasQuote
+				case '\n':
+					if !hasQuote {
+						break
+					}
+				default:
+					builder.WriteByte(curRune)
+				}
 			}
+			out = builder.String()
 		case constants.TYPE:
-			path, isExists := constants.GetCommand(tokens[1])
+			scanner := bufio.NewScanner(os.Stdin)
+			scanner.Scan()
+			tokens := scanner.Text()
+			path, isExists := constants.GetCommand(tokens)
 			if isExists {
-				out = fmt.Sprintf("%v is %v", tokens[1], path)
+				out = fmt.Sprintf("%v is %v", tokens, path)
 			} else {
-				out = fmt.Sprintf("%v: not found", tokens[1])
+				out = fmt.Sprintf("%v: not found", tokens)
 			}
 		case constants.CD:
-			tokens[1] = strings.Replace(tokens[1], "~", os.Getenv("HOME"), 1)
+			scanner := bufio.NewScanner(os.Stdin)
+			scanner.Scan()
+			tokens := scanner.Text()
+			tokens = strings.Replace(tokens, "~", os.Getenv("HOME"), 1)
 			var path string
-			if filepath.IsAbs(tokens[1]) {
-				path = tokens[1]
+			if filepath.IsAbs(tokens) {
+				path = tokens
 			} else {
-				path = filepath.Join(curWorkingDir, tokens[1])
+				path = filepath.Join(curWorkingDir, tokens)
 			}
 			// fmt.Println(tmp)
 			if _, err := os.Stat(path); err != nil {
-				out = fmt.Sprintf("cd: %v: No such file or directory", tokens[1])
+				out = fmt.Sprintf("cd: %v: No such file or directory", tokens)
 			} else {
 				curWorkingDir = path
 			}
@@ -83,13 +95,16 @@ func main() {
 			out = curWorkingDir
 		default:
 			// fmt.Println(constants.MapCommand2Path)
-			program, isExisted := constants.GetCommand(tokens[0])
+			scanner := bufio.NewScanner(os.Stdin)
+			scanner.Scan()
+			tokens := scanner.Text()
+			program, isExisted := constants.GetCommand(cmd)
 			if !isExisted {
-				out = fmt.Sprintf("%v: command not found", tokens[0])
+				out = fmt.Sprintf("%v: command not found", cmd)
 			} else {
 				var args []string
 				if len(tokens) > 1 {
-					args = tokens[1:]
+					args = strings.Split(tokens, " ")
 				}
 				output, _ := exec.Command(program, args...).Output()
 				out = strings.TrimSuffix(string(output), "\n")
