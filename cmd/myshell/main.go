@@ -44,6 +44,7 @@ func main() {
 			runeScanner.Split(bufio.ScanRunes)
 			hasQuote := false
 			hasSlash := false
+		runeScan:
 			for runeScanner.Scan() {
 				curRune := runeScanner.Bytes()[0]
 				switch curRune {
@@ -57,12 +58,13 @@ func main() {
 					hasQuote = !hasQuote
 				case '\n':
 					if !hasQuote {
-						break
+						break runeScan
 					}
 				default:
 					builder.WriteByte(curRune)
 				}
 			}
+
 			out = builder.String()
 		case constants.TYPE:
 			scanner := bufio.NewScanner(os.Stdin)
