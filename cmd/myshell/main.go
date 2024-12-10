@@ -36,7 +36,28 @@ func main() {
 			}
 			os.Exit(code)
 		case constants.ECHO:
-			out = strings.Join(tokens[1:], " ")
+			remainBuilder := strings.Builder{}
+			remainBuilder.WriteString(strings.Join(tokens[1:], " "))
+			hasStart := strings.HasPrefix(remainBuilder.String(), "'")
+			hasTerminate := strings.HasSuffix(remainBuilder.String(), "'") && !strings.HasSuffix(remainBuilder.String(), "\\'")
+			switch {
+			// case hasStart && !hasTerminate:
+			// 	remainScanner := bufio.NewScanner(os.Stdin)
+			// 	remainScanner.Split(bufio.ScanRunes)
+			// 	for remainScanner.Scan() {
+			// 		curBytes := scanner.Bytes()
+			// 		remainBuilder.Write(curBytes)
+			// 		hasTerminate := curBytes[len(curBytes)-1] == '\'' && curBytes[len(curBytes)]
+			// 		if hasTerminate {
+			// 			break
+			// 		}
+			// 	}
+			// 	fallthrough
+			case hasStart && hasTerminate:
+				out = strings.Trim(remainBuilder.String(), "'")
+			default:
+				out = remainBuilder.String()
+			}
 		case constants.TYPE:
 			path, isExists := constants.GetCommand(tokens[1])
 			if isExists {
