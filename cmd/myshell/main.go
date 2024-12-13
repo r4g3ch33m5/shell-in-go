@@ -168,10 +168,6 @@ func main() {
 					return !quoted && r == ' '
 				})
 
-				for idx, arg := range args {
-					fmt.Println(strconv.Quote(arg))
-					args[idx], _ = strconv.Unquote(arg)
-				}
 				command := exec.Command(program, args...)
 				command.Stderr = os.Stderr
 				command.Stdout = os.Stdout
