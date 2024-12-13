@@ -168,7 +168,7 @@ func main() {
 					return !quoted && r == ' '
 				})
 				// fmt.Println(strconv.Quote(tokens))
-				// fmt.Println(exec.Command(program, args...).String())
+				fmt.Println(args)
 				command := exec.Command(program, args...)
 				command.Stderr = os.Stderr
 				command.Stdout = os.Stdout
