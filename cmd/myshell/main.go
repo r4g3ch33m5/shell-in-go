@@ -159,11 +159,14 @@ func main() {
 			if !isExisted {
 				out = fmt.Sprintf("%v: command not found", cmd)
 			} else {
-				var args []string
 				tokens := buffer.String()
-				if len(tokens) > 1 {
-					args = strings.Split(tokens, " ")
-				}
+				quoted := false
+				args := strings.FieldsFunc(tokens, func(r rune) bool {
+					if r == '"' {
+						quoted = !quoted
+					}
+					return !quoted && r == ' '
+				})
 				// fmt.Println(strconv.Quote(tokens))
 				// fmt.Println(exec.Command(program, args...).String())
 				command := exec.Command(program, args...)
