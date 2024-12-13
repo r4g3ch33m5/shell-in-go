@@ -167,7 +167,7 @@ func main() {
 					}
 					return !quoted && r == ' '
 				})
-				// fmt.Println(strconv.Quote(tokens))
+				fmt.Println(args)
 				for idx, arg := range args {
 					args[idx], _ = strconv.Unquote(arg)
 				}
