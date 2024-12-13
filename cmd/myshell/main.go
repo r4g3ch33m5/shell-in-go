@@ -154,9 +154,6 @@ func main() {
 			// scanner := bufio.NewScanner(os.Stdin)
 			// scanner.Scan()
 			program, isExisted := constants.GetCommand(cmd)
-			if cmd == "cat" {
-				program = "cat"
-			}
 			// retrieve args
 			buffer := retrieveArgs(scanner, Opt{KeepQuote: true})
 			if !isExisted {
@@ -173,7 +170,6 @@ func main() {
 				output, err := command.Output()
 				fmt.Println(output, err)
 				out = strings.TrimSuffix(string(output), "\n")
-
 			}
 		}
 		if len(out) != 0 {
