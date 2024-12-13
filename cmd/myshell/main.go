@@ -26,25 +26,18 @@ func isSpace(r byte) bool {
 	return false
 }
 
+var spaces = map[byte]struct{}{
+	' ':  {},
+	'\t': {},
+}
+
 func retrieveArgs(scanner *bufio.Scanner) strings.Builder {
 	// hasSlash := false
 	hasQuote := false
 	hasDQuote := false
-	specialChar := map[byte]struct{}{
-		'\'': {},
-		'"':  {},
-		'\\': {},
-		'\n': {},
-		'\r': {},
-	}
 	buffer := strings.Builder{}
 bufferScan:
 	for {
-		if _, isSpecial := specialChar[scanner.Bytes()[0]]; !isSpecial {
-			buffer.Write(scanner.Bytes())
-			scanner.Scan()
-			continue
-		}
 		switch scanner.Bytes()[0] {
 		case '\r', '\n':
 			if hasQuote || hasDQuote {
@@ -63,6 +56,16 @@ bufferScan:
 				buffer.Write(scanner.Bytes())
 			} else {
 				hasDQuote = !hasDQuote
+			}
+		default:
+			buffer.Write(scanner.Bytes())
+			if !(hasDQuote || hasQuote) && scanner.Bytes()[0] == ' ' || scanner.Bytes()[0] == '\t' {
+				// scan until next valid character
+				for scanner.Scan() {
+					if !(scanner.Bytes()[0] == ' ' || scanner.Bytes()[0] == '\t') {
+						continue bufferScan
+					}
+				}
 			}
 		}
 		scanner.Scan()
@@ -104,7 +107,7 @@ func main() {
 			os.Exit(code)
 		case constants.ECHO:
 			buffer := retrieveArgs(scanner)
-			out = strings.TrimSpace(buffer.String())
+			out = buffer.String()
 		case constants.TYPE:
 			scanner := bufio.NewScanner(os.Stdin)
 			scanner.Scan()
