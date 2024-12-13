@@ -26,11 +26,20 @@ func isSpace(r byte) bool {
 	return false
 }
 
-func retrieveArgs(scanner *bufio.Scanner) strings.Builder {
+type Opt struct {
+	KeepQuote bool
+}
+
+func retrieveArgs(scanner *bufio.Scanner, opts ...Opt) strings.Builder {
 	// hasSlash := false
 	hasQuote := false
 	hasDQuote := false
 	buffer := strings.Builder{}
+	opt := Opt{}
+	if len(opts) > 0 {
+		opt = opts[0]
+	}
+
 bufferScan:
 	for {
 		switch scanner.Bytes()[0] {
@@ -44,12 +53,18 @@ bufferScan:
 			if hasDQuote {
 				buffer.Write(scanner.Bytes())
 			} else {
+				if opt.KeepQuote {
+					buffer.Write(scanner.Bytes())
+				}
 				hasQuote = !hasQuote
 			}
 		case '"':
 			if hasQuote {
 				buffer.Write(scanner.Bytes())
 			} else {
+				if opt.KeepQuote {
+					buffer.Write(scanner.Bytes())
+				}
 				hasDQuote = !hasDQuote
 			}
 		case ' ', '\t':
@@ -140,7 +155,7 @@ func main() {
 			// scanner.Scan()
 			program, isExisted := constants.GetCommand(cmd)
 			// retrieve args
-			buffer := retrieveArgs(scanner)
+			buffer := retrieveArgs(scanner, Opt{KeepQuote: true})
 			if !isExisted {
 				out = fmt.Sprintf("%v: command not found", cmd)
 			} else {
@@ -149,6 +164,8 @@ func main() {
 				if len(tokens) > 1 {
 					args = strings.Split(tokens, " ")
 				}
+				// fmt.Println(strconv.Quote(tokens))
+				// fmt.Println(exec.Command(program, args...).String())
 				output, _ := exec.Command(program, args...).Output()
 				out = strings.TrimSuffix(string(output), "\n")
 			}
