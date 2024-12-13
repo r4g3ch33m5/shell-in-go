@@ -26,11 +26,6 @@ func isSpace(r byte) bool {
 	return false
 }
 
-var spaces = map[byte]struct{}{
-	' ':  {},
-	'\t': {},
-}
-
 func retrieveArgs(scanner *bufio.Scanner) strings.Builder {
 	// hasSlash := false
 	hasQuote := false
@@ -57,16 +52,20 @@ bufferScan:
 			} else {
 				hasDQuote = !hasDQuote
 			}
-		default:
-			buffer.Write(scanner.Bytes())
-			if !(hasDQuote || hasQuote) && scanner.Bytes()[0] == ' ' || scanner.Bytes()[0] == '\t' {
-				// scan until next valid character
+		case ' ', '\t':
+			if hasDQuote || hasQuote {
+				buffer.Write(scanner.Bytes())
+			} else if len(buffer.String()) != 0 {
+				buffer.Write(scanner.Bytes())
+				// skip trailing
 				for scanner.Scan() {
 					if !(scanner.Bytes()[0] == ' ' || scanner.Bytes()[0] == '\t') {
-						continue bufferScan
+						break bufferScan
 					}
 				}
 			}
+		default:
+			buffer.Write(scanner.Bytes())
 		}
 		scanner.Scan()
 	}
@@ -98,9 +97,8 @@ func main() {
 		switch cmd {
 		case constants.EXIT:
 			code := 0
-			scanner := bufio.NewScanner(os.Stdin)
-			scanner.Scan()
-			tokens := scanner.Text()
+			buffer := retrieveArgs(scanner)
+			tokens := buffer.String()
 			if len(tokens) != 0 {
 				code, _ = strconv.Atoi(tokens)
 			}
@@ -119,9 +117,8 @@ func main() {
 				out = fmt.Sprintf("%v: not found", tokens)
 			}
 		case constants.CD:
-			scanner := bufio.NewScanner(os.Stdin)
-			scanner.Scan()
-			tokens := scanner.Text()
+			buffer := retrieveArgs(scanner)
+			tokens := buffer.String()
 			tokens = strings.Replace(tokens, "~", os.Getenv("HOME"), 1)
 			var path string
 			if filepath.IsAbs(tokens) {
