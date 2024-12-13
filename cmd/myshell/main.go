@@ -167,7 +167,12 @@ func main() {
 					}
 					return !quoted && r == ' '
 				})
-
+				for idx, arg := range args {
+					un, err := strconv.Unquote(arg)
+					if err == nil {
+						args[idx] = un
+					}
+				}
 				command := exec.Command(program, args...)
 				command.Stderr = os.Stderr
 				command.Stdout = os.Stdout
