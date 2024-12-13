@@ -60,7 +60,7 @@ bufferScan:
 				// skip trailing
 				for scanner.Scan() {
 					if !(scanner.Bytes()[0] == ' ' || scanner.Bytes()[0] == '\t') {
-						break bufferScan
+						continue bufferScan
 					}
 				}
 			}
