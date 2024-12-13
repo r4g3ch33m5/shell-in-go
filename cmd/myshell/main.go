@@ -167,10 +167,9 @@ func main() {
 				// fmt.Println(strconv.Quote(tokens))
 				// fmt.Println(exec.Command(program, args...).String())
 				command := exec.Command(program, args...)
-				err := command.Run()
-				output, err := command.Output()
-				fmt.Println(output, err, command.String())
-				out = strings.TrimSuffix(string(output), "\n")
+
+				fmt.Println(command.Run(), command.String())
+				// out = strings.TrimSuffix(string(output), "\n")
 			}
 		}
 		if len(out) != 0 {
