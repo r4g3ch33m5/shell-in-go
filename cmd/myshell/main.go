@@ -162,14 +162,14 @@ func main() {
 				tokens := buffer.String()
 				quoted := false
 				args := strings.FieldsFunc(tokens, func(r rune) bool {
-					if r == '"' {
+					if r == '"' || r == '\'' {
 						quoted = !quoted
 					}
 					return !quoted && r == ' '
 				})
 
 				for idx, arg := range args {
-					fmt.Println(strconv.Quote(arg))
+					// fmt.Println(strconv.Quote(arg))
 					args[idx], _ = strconv.Unquote(arg)
 				}
 				command := exec.Command(program, args...)
