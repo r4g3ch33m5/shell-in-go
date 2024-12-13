@@ -168,7 +168,7 @@ func main() {
 				// fmt.Println(exec.Command(program, args...).String())
 				command := exec.Command(program, args...)
 				output, err := command.Output()
-				fmt.Println(output, err)
+				fmt.Println(output, err, command.String())
 				out = strings.TrimSuffix(string(output), "\n")
 			}
 		}
