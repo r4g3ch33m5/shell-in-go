@@ -175,6 +175,7 @@ func main() {
 					switch r {
 					case '\'':
 						if hasQuote {
+							hasQuote = false
 							return true
 						}
 						if !hasDQuote {
@@ -182,6 +183,7 @@ func main() {
 						}
 					case '"':
 						if hasDQuote {
+							hasDQuote = false
 							return true
 						}
 						if !hasQuote {
