@@ -46,7 +46,8 @@ bufferScan:
 		case '\\':
 			scanner.Scan()
 			cur := scanner.Bytes()[0]
-			if (hasDQuote || hasQuote) && cur != '\'' && cur != '"' {
+			fmt.Println(buffer.String(), "cur", string(cur))
+			if (hasDQuote || hasQuote) && cur != '\'' && cur != '"' && cur != '\\' {
 				buffer.WriteByte('\\')
 			}
 			buffer.Write(scanner.Bytes())
