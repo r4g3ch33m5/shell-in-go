@@ -27,7 +27,8 @@ func isSpace(r byte) bool {
 }
 
 type Opt struct {
-	KeepQuote bool
+	KeepQuote     bool
+	ReturnOnSpace bool
 }
 
 func retrieveArgs(scanner *bufio.Scanner, opts ...Opt) strings.Builder {
@@ -85,6 +86,8 @@ bufferScan:
 		case ' ', '\t':
 			if hasDQuote || hasQuote {
 				buffer.Write(scanner.Bytes())
+			} else if opt.ReturnOnSpace {
+				return buffer
 			} else if len(buffer.String()) != 0 {
 				buffer.Write(scanner.Bytes())
 				// skip trailing
@@ -117,11 +120,7 @@ func main() {
 			scanner.Scan()
 			continue
 		}
-		cmdBuffer := strings.Builder{}
-		for !isSpace(scanner.Bytes()[0]) {
-			cmdBuffer.Write(scanner.Bytes())
-			scanner.Scan()
-		}
+		cmdBuffer := retrieveArgs(scanner, Opt{KeepQuote: true, ReturnOnSpace: true})
 		cmd := cmdBuffer.String()
 		var out string
 		switch cmd {
@@ -213,13 +212,11 @@ func main() {
 				if err != nil {
 					fmt.Println(command.String())
 				}
-				// out = strings.TrimSuffix(string(output), "\n")
 			}
 		}
 		if len(out) != 0 {
 			out += "\n"
 		}
-		// fmt.Println("quote out: ", strconv.Quote(out))
 		fmt.Fprint(os.Stdout, out, "$ ")
 	}
 }
