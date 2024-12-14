@@ -171,7 +171,7 @@ func main() {
 					args[idx] = strings.Trim(arg, "'")
 					args[idx] = strings.Trim(arg, `"`)
 				}
-				command := exec.Command(program, args...)
+				command := exec.Command(buffer.String())
 				command.Stderr = os.Stderr
 				command.Stdout = os.Stdout
 				err := command.Run()
