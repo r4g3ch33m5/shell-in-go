@@ -67,6 +67,12 @@ bufferScan:
 				}
 				hasDQuote = !hasDQuote
 			}
+		case '\\':
+			if hasDQuote || hasQuote {
+				buffer.Write(scanner.Bytes())
+			}
+			scanner.Scan()
+			buffer.Write(scanner.Bytes())
 		case ' ', '\t':
 			if hasDQuote || hasQuote {
 				buffer.Write(scanner.Bytes())
