@@ -167,11 +167,12 @@ func main() {
 					}
 					return !quoted && r == ' '
 				})
+
 				for idx, arg := range args {
-					args[idx] = strings.Trim(arg, "'")
-					args[idx] = strings.Trim(arg, `"`)
+					args[idx] = strings.Clone(strings.Trim(arg, "'"))
+					args[idx] = strings.Clone(strings.Trim(args[idx], `"`))
 				}
-				command := exec.Command(buffer.String())
+				command := exec.Command(program, args...)
 				command.Stderr = os.Stderr
 				command.Stdout = os.Stdout
 				err := command.Run()
