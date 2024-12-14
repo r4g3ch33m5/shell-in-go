@@ -168,10 +168,8 @@ func main() {
 					return !quoted && r == ' '
 				})
 				for idx, arg := range args {
-					un, err := strconv.Unquote(arg)
-					if err == nil {
-						args[idx] = un
-					}
+					args[idx] = strings.Trim(arg, "'")
+					args[idx] = strings.Trim(arg, `"`)
 				}
 				command := exec.Command(program, args...)
 				command.Stderr = os.Stderr
