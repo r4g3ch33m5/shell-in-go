@@ -43,6 +43,12 @@ func retrieveArgs(scanner *bufio.Scanner, opts ...Opt) strings.Builder {
 bufferScan:
 	for {
 		switch scanner.Bytes()[0] {
+		case '\\':
+			if hasDQuote || hasQuote {
+				buffer.Write(scanner.Bytes())
+			}
+			scanner.Scan()
+			buffer.Write(scanner.Bytes())
 		case '\r', '\n':
 			if hasQuote || hasDQuote {
 				buffer.Write(scanner.Bytes())
@@ -67,12 +73,6 @@ bufferScan:
 				}
 				hasDQuote = !hasDQuote
 			}
-		case '\\':
-			if hasDQuote || hasQuote {
-				buffer.Write(scanner.Bytes())
-			}
-			scanner.Scan()
-			buffer.Write(scanner.Bytes())
 		case ' ', '\t':
 			if hasDQuote || hasQuote {
 				buffer.Write(scanner.Bytes())
