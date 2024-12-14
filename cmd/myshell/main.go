@@ -53,6 +53,7 @@ bufferScan:
 				buffer.WriteByte('\\')
 			}
 			buffer.Write(scanner.Bytes())
+
 		case '\r', '\n':
 			if hasQuote || hasDQuote {
 				buffer.Write(scanner.Bytes())
