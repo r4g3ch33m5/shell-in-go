@@ -56,7 +56,7 @@ bufferScan:
 				break bufferScan
 			}
 		case '\'':
-			fmt.Println("has dquote", hasDQuote, "hasQuote", hasQuote)
+
 			if hasDQuote {
 				buffer.Write(scanner.Bytes())
 			} else {
@@ -65,9 +65,9 @@ bufferScan:
 				}
 				hasQuote = !hasQuote
 			}
-			fmt.Println("has dquote", hasDQuote, "hasQuote", hasQuote)
+
 		case '"':
-			fmt.Println("has dquote", hasDQuote, "hasQuote", hasQuote)
+
 			if hasQuote {
 				buffer.Write(scanner.Bytes())
 			} else {
@@ -76,7 +76,7 @@ bufferScan:
 				}
 				hasDQuote = !hasDQuote
 			}
-			fmt.Println("has dquote", hasDQuote, "hasQuote", hasQuote)
+
 		case ' ', '\t':
 			if hasDQuote || hasQuote {
 				buffer.Write(scanner.Bytes())
