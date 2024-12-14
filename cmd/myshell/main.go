@@ -56,6 +56,7 @@ bufferScan:
 				break bufferScan
 			}
 		case '\'':
+			fmt.Println("has dquote", hasDQuote, "hasQuote", hasQuote)
 			if hasDQuote {
 				buffer.Write(scanner.Bytes())
 			} else {
@@ -64,7 +65,9 @@ bufferScan:
 				}
 				hasQuote = !hasQuote
 			}
+			fmt.Println("has dquote", hasDQuote, "hasQuote", hasQuote)
 		case '"':
+			fmt.Println("has dquote", hasDQuote, "hasQuote", hasQuote)
 			if hasQuote {
 				buffer.Write(scanner.Bytes())
 			} else {
@@ -73,6 +76,7 @@ bufferScan:
 				}
 				hasDQuote = !hasDQuote
 			}
+			fmt.Println("has dquote", hasDQuote, "hasQuote", hasQuote)
 		case ' ', '\t':
 			if hasDQuote || hasQuote {
 				buffer.Write(scanner.Bytes())
@@ -165,12 +169,26 @@ func main() {
 				out = fmt.Sprintf("%v: command not found", cmd)
 			} else {
 				tokens := buffer.String()
-				quoted := false
+				var hasQuote bool
+				var hasDQuote bool
 				args := strings.FieldsFunc(tokens, func(r rune) bool {
-					if r == '"' || r == '\'' {
-						quoted = !quoted
+					switch r {
+					case '\'':
+						if hasQuote {
+							return true
+						}
+						if !hasDQuote {
+							hasQuote = !hasQuote
+						}
+					case '"':
+						if hasDQuote {
+							return true
+						}
+						if !hasQuote {
+							hasDQuote = !hasDQuote
+						}
 					}
-					return !quoted && r == ' '
+					return !hasQuote && !hasDQuote && r == ' '
 				})
 
 				for idx, arg := range args {
