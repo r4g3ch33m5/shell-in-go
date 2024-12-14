@@ -122,9 +122,8 @@ func main() {
 			buffer := retrieveArgs(scanner)
 			out = buffer.String()
 		case constants.TYPE:
-			scanner := bufio.NewScanner(os.Stdin)
-			scanner.Scan()
-			tokens := scanner.Text()
+			args := retrieveArgs(scanner)
+			tokens := args.String()
 			path, isExists := constants.GetCommand(tokens)
 			if isExists {
 				out = fmt.Sprintf("%v is %v", tokens, path)
