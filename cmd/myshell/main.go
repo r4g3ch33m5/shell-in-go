@@ -44,10 +44,11 @@ bufferScan:
 	for {
 		switch scanner.Bytes()[0] {
 		case '\\':
-			if hasDQuote || hasQuote {
-				buffer.Write(scanner.Bytes())
-			}
 			scanner.Scan()
+			cur := scanner.Bytes()[0]
+			if (hasDQuote || hasQuote) && cur != '\'' && cur != '"' && cur != '\\' {
+				buffer.WriteByte('\\')
+			}
 			buffer.Write(scanner.Bytes())
 		case '\r', '\n':
 			if hasQuote || hasDQuote {
@@ -197,7 +198,7 @@ func main() {
 					if strings.HasPrefix(arg, "'") {
 						args[idx] = strings.Clone(strings.Trim(arg, "'"))
 					}
-					if strings.HasPrefix(arg, "\"") {
+					if strings.HasPrefix(arg, `"`) {
 						args[idx] = strings.Clone(strings.Trim(args[idx], `"`))
 					}
 				}
