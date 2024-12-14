@@ -120,7 +120,7 @@ func main() {
 			scanner.Scan()
 			continue
 		}
-		cmdBuffer := retrieveArgs(scanner, Opt{KeepQuote: true, ReturnOnSpace: true})
+		cmdBuffer := retrieveArgs(scanner, Opt{KeepQuote: false, ReturnOnSpace: true})
 		cmd := cmdBuffer.String()
 		var out string
 		switch cmd {
