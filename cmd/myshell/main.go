@@ -194,8 +194,12 @@ func main() {
 				})
 
 				for idx, arg := range args {
-					args[idx] = strings.Clone(strings.Trim(arg, "'"))
-					args[idx] = strings.Clone(strings.Trim(args[idx], `"`))
+					if strings.HasPrefix(arg, "'") {
+						args[idx] = strings.Clone(strings.Trim(arg, "'"))
+					}
+					if strings.HasPrefix(arg, "\"") {
+						args[idx] = strings.Clone(strings.Trim(args[idx], `"`))
+					}
 				}
 				command := exec.Command(program, args...)
 				command.Stderr = os.Stderr
