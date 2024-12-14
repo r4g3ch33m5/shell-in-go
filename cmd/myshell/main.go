@@ -47,7 +47,9 @@ bufferScan:
 			scanner.Scan()
 			cur := scanner.Bytes()[0]
 			// fmt.Println(buffer.String(), "cur", string(cur))
-			if (hasDQuote || hasQuote) && cur != '\'' && cur != '"' && cur != '\\' {
+			if hasQuote {
+				buffer.WriteByte('\\')
+			} else if hasDQuote && cur != '"' && cur != '\\' && cur != '$' {
 				buffer.WriteByte('\\')
 			}
 			buffer.Write(scanner.Bytes())
